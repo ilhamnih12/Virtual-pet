@@ -33,6 +33,7 @@ jobs:
       - name: Install Capacitor & Build APK
         run: |
           npx cap add android
+          npx @capacitor/assets generate
           npx cap sync
           cd android && ./gradlew assembleDebug
 
