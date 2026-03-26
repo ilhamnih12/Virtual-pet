@@ -22,6 +22,10 @@ export interface GameState {
   activeRoom: Room;
   isSleeping: boolean;
   lastPlayed: number;
+  settings: {
+    volume: number;
+    language: 'en' | 'id';
+  };
 }
 
 const INITIAL_STATE: GameState = {
@@ -37,6 +41,10 @@ const INITIAL_STATE: GameState = {
   activeRoom: 'Kitchen',
   isSleeping: false,
   lastPlayed: Date.now(),
+  settings: {
+    volume: 100,
+    language: 'en',
+  },
 };
 
 const MAX_STAT = 100;
@@ -74,6 +82,10 @@ export function useGameState() {
         }
         
         parsed.lastPlayed = now;
+        // ensure settings exist if loading from old state
+        if (!parsed.settings) {
+          parsed.settings = INITIAL_STATE.settings;
+        }
         setState({ ...INITIAL_STATE, ...parsed });
       } catch (e) {
         console.error('Failed to parse saved state', e);
@@ -192,6 +204,17 @@ export function useGameState() {
     });
   }, []);
 
+  const updateSettings = useCallback((newSettings: Partial<GameState['settings']>) => {
+    setState((prev) => ({
+      ...prev,
+      settings: { ...prev.settings, ...newSettings },
+    }));
+  }, []);
+
+  const resetGame = useCallback(() => {
+    setState(INITIAL_STATE);
+  }, []);
+
   // Level up logic
   useEffect(() => {
     if (state.xp >= state.level * XP_PER_LEVEL) {
@@ -215,6 +238,8 @@ export function useGameState() {
       buyItem,
       equipItem,
       changeRoom,
+      updateSettings,
+      resetGame,
     },
   };
 }

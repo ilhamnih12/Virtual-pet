@@ -1,20 +1,35 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# My Virtual Pet App
 
-# Run and deploy your AI Studio app
+Welcome to My Virtual Pet App, created by **Edinst**!
 
-This contains everything you need to run your app locally.
+This is a fun and interactive virtual pet game where you can feed, play, clean, and take care of your very own digital companion.
 
-View your app in AI Studio: https://ai.studio/apps/eada126d-bafa-4939-b185-0585930b8f0d
+## Features
+
+*   **Interactive Rooms:** Move between different rooms (Kitchen, Bathroom, Bedroom, Lab, Game Center, Shop).
+*   **Pet Needs:** Monitor and manage your pet's hunger, energy, fun, and cleanliness.
+*   **Mini-games:** Play games to earn coins.
+*   **Customization:** Buy items from the shop to customize your pet.
+*   **Settings:** Customize volume, language (English/Indonesian), and more!
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:**  Node.js (v22 recommended)
 
+1.  Install dependencies:
+    ```bash
+    npm install
+    ```
+2.  Run the web app:
+    ```bash
+    npm run dev
+    ```
+3.  Build for Android (requires Android Studio):
+    ```bash
+    npm run build
+    npx cap sync
+    npx cap open android
+    ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+*Created with ❤️ by Edinst*
