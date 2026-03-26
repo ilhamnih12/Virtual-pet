@@ -1,30 +1,30 @@
-# My Virtual Pet App
+# Game Peliharaan Virtual Gue
 
-Welcome to My Virtual Pet App, created by **Edinst**!
+Halo, selamat datang di Game Peliharaan Virtual bikinan **Edinst**!
 
-This is a fun and interactive virtual pet game where you can feed, play, clean, and take care of your very own digital companion.
+Ini tuh game santai buat melihara hewan peliharaan digital. Lo bisa ngasih makan, ngajak main, mandiin, dan ngerawat peliharaan lo biar dia hepi terus.
 
-## Features
+## Fitur-fiturnya:
 
-*   **Interactive Rooms:** Move between different rooms (Kitchen, Bathroom, Bedroom, Lab, Game Center, Shop).
-*   **Pet Needs:** Monitor and manage your pet's hunger, energy, fun, and cleanliness.
-*   **Mini-games:** Play games to earn coins.
-*   **Customization:** Buy items from the shop to customize your pet.
-*   **Settings:** Customize volume, language (English/Indonesian), and more!
+*   **Pindah-pindah Ruangan:** Lo bisa bawa peliharaan lo ke Dapur, Kamar Mandi, Kamar Tidur, Lab, Tempat Main, atau ke Toko.
+*   **Ngurus Kebutuhan Peliharaan:** Pantau terus rasa lapar, energi, kebahagiaan, dan kebersihannya. Jangan sampe dia sedih!
+*   **Mini-games:** Ada game kecil buat nyari koin.
+*   **Beli-beli Item:** Koin yang udah kekumpul bisa dipake belanja di toko buat ngedandanin peliharaan lo.
+*   **Pengaturan:** Lo bisa atur volume, ganti bahasa (Inggris/Indonesia), sampe ngereset gamenya kalo mau ngulang dari awal.
 
-## Run Locally
+## Cara Jalanin di Laptop/PC Lo
 
-**Prerequisites:**  Node.js (v22 recommended)
+**Syarat:** Mesti udah install Node.js (disaranin versi 22 ya).
 
-1.  Install dependencies:
+1.  Install dulu semua kebutuhannya:
     ```bash
     npm install
     ```
-2.  Run the web app:
+2.  Kalo mau jalanin di browser lokal (web app):
     ```bash
     npm run dev
     ```
-3.  Build for Android (requires Android Studio):
+3.  Kalo lo pengen ngebuild jadi APK Android (pastikan udah ada Android Studio):
     ```bash
     npm run build
     npx cap sync
@@ -32,4 +32,4 @@ This is a fun and interactive virtual pet game where you can feed, play, clean, 
     ```
 
 ---
-*Created with ❤️ by Edinst*
+*Dibuat dengan ❤️ oleh Edinst*
