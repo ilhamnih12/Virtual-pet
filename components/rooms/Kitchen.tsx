@@ -1,5 +1,6 @@
 import { GameState } from '@/hooks/useGameState';
 import { Apple, Pizza, IceCream, Carrot } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 interface KitchenProps {
   state: GameState;
@@ -7,6 +8,7 @@ interface KitchenProps {
 }
 
 export default function Kitchen({ state, feed }: KitchenProps) {
+  const t = useTranslations(state.settings.language);
   const foods = [
     { id: 'apple', name: 'Apple', icon: <Apple size={32} className="text-red-500" />, value: 10, cost: 5 },
     { id: 'carrot', name: 'Carrot', icon: <Carrot size={32} className="text-orange-500" />, value: 15, cost: 8 },
@@ -16,7 +18,7 @@ export default function Kitchen({ state, feed }: KitchenProps) {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/50">
-      <h2 className="text-lg font-bold text-neutral-800 mb-3 text-center">Kitchen</h2>
+      <h2 className="text-lg font-bold text-neutral-800 mb-3 text-center">{t('kitchen')}</h2>
       <div className="grid grid-cols-4 gap-2">
         {foods.map((food) => (
           <button

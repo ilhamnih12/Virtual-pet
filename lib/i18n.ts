@@ -1,0 +1,153 @@
+export type TranslationKey =
+  | 'kitchen' | 'bathroom' | 'bedroom' | 'lab' | 'games' | 'shop' | 'gameCenter'
+  | 'feed' | 'clean' | 'sleep' | 'wakeUp' | 'energyLevel'
+  | 'hungerLevel' | 'dirtLevel' | 'funLevel'
+  | 'playGame' | 'buyItem' | 'equip' | 'equipped'
+  | 'settings' | 'developer' | 'soundVolume' | 'language'
+  | 'english' | 'indonesian' | 'resetGame' | 'resetConfirm'
+  | 'cancel' | 'confirm' | 'loading' | 'level'
+  | 'mathSprint' | 'catchGame' | 'memoryMatch' | 'start' | 'score' | 'time'
+  | 'gameOver' | 'coinsEarned' | 'playAgain' | 'back'
+  | 'inventory' | 'store' | 'price' | 'notEnoughCoins' | 'buy'
+  | 'laboratory' | 'vitals' | 'age' | 'days' | 'weight' | 'mood' | 'hygiene' | 'happy' | 'sad'
+  | 'dailyQuests' | 'questHunger' | 'questClean' | 'questFun'
+  | 'catchGameDesc' | 'memoryMatchDesc' | 'mathSprintDesc';
+
+type Translations = Record<TranslationKey, string>;
+
+export const en: Translations = {
+  kitchen: 'Kitchen',
+  bathroom: 'Bathroom',
+  bedroom: 'Bedroom',
+  lab: 'Lab',
+  games: 'Games',
+  gameCenter: 'Game Center',
+  shop: 'Shop',
+  feed: 'Feed',
+  clean: 'Clean',
+  sleep: 'Go to Sleep',
+  wakeUp: 'Wake Up',
+  energyLevel: 'Energy Level',
+  hungerLevel: 'Hunger Level',
+  dirtLevel: 'Dirt Level',
+  funLevel: 'Fun Level',
+  playGame: 'Play Game',
+  buyItem: 'Buy Item',
+  equip: 'Equip',
+  equipped: 'Equipped',
+  settings: 'Settings',
+  developer: 'Developer',
+  soundVolume: 'Sound Volume',
+  language: 'Language',
+  english: 'English',
+  indonesian: 'Indonesian',
+  resetGame: 'Reset Game',
+  resetConfirm: 'Are you sure you want to reset all game data? This cannot be undone!',
+  cancel: 'Cancel',
+  confirm: 'Yes, Reset',
+  loading: 'Loading Pet...',
+  level: 'Lvl',
+  mathSprint: 'Math Sprint',
+  catchGame: 'Catch Game',
+  memoryMatch: 'Memory Match',
+  catchGameDesc: 'Catch falling food!',
+  memoryMatchDesc: 'Find the pairs!',
+  mathSprintDesc: 'Solve fast!',
+  start: 'Start',
+  score: 'Score',
+  time: 'Time',
+  gameOver: 'Game Over',
+  coinsEarned: 'Coins Earned',
+  playAgain: 'Play Again',
+  back: 'Back',
+  inventory: 'Inventory',
+  store: 'Store',
+  price: 'Price',
+  notEnoughCoins: 'Not Enough Coins',
+  buy: 'Buy',
+  laboratory: 'Laboratory',
+  vitals: 'Vitals',
+  age: 'Age',
+  days: 'days',
+  weight: 'Weight',
+  mood: 'Mood',
+  hygiene: 'Hygiene',
+  happy: 'Happy',
+  sad: 'Sad',
+  dailyQuests: 'Daily Quests',
+  questHunger: 'Keep hunger above 80%',
+  questClean: 'Clean pet completely',
+  questFun: 'Play games until fun is 90%',
+};
+
+export const id: Translations = {
+  kitchen: 'Dapur',
+  bathroom: 'K. Mandi',
+  bedroom: 'K. Tidur',
+  lab: 'Lab',
+  games: 'Bermain',
+  gameCenter: 'Pusat Game',
+  shop: 'Toko',
+  feed: 'Beri Makan',
+  clean: 'Mandikan',
+  sleep: 'Tidur',
+  wakeUp: 'Bangun',
+  energyLevel: 'Tingkat Energi',
+  hungerLevel: 'Tingkat Lapar',
+  dirtLevel: 'Tingkat Kotor',
+  funLevel: 'Tingkat Kesenangan',
+  playGame: 'Main Game',
+  buyItem: 'Beli Item',
+  equip: 'Pakai',
+  equipped: 'Dipakai',
+  settings: 'Pengaturan',
+  developer: 'Pengembang',
+  soundVolume: 'Volume Suara',
+  language: 'Bahasa',
+  english: 'Inggris',
+  indonesian: 'Indonesia',
+  resetGame: 'Reset Game',
+  resetConfirm: 'Apakah Anda yakin ingin mereset semua data permainan? Ini tidak bisa dikembalikan!',
+  cancel: 'Batal',
+  confirm: 'Ya, Reset',
+  loading: 'Memuat peliharaan...',
+  level: 'Lvl',
+  mathSprint: 'Lari Matematika',
+  catchGame: 'Tangkap Makanan',
+  memoryMatch: 'Cocokkan Gambar',
+  catchGameDesc: 'Tangkap yang jatuh!',
+  memoryMatchDesc: 'Cari pasangannya!',
+  mathSprintDesc: 'Jawab dengan cepat!',
+  start: 'Mulai',
+  score: 'Skor',
+  time: 'Waktu',
+  gameOver: 'Permainan Selesai',
+  coinsEarned: 'Koin Didapat',
+  playAgain: 'Main Lagi',
+  back: 'Kembali',
+  inventory: 'Tas',
+  store: 'Toko',
+  price: 'Harga',
+  notEnoughCoins: 'Koin Tidak Cukup',
+  buy: 'Beli',
+  laboratory: 'Laboratorium',
+  vitals: 'Status Tanda Vital',
+  age: 'Umur',
+  days: 'hari',
+  weight: 'Berat',
+  mood: 'Suasana Hati',
+  hygiene: 'Kebersihan',
+  happy: 'Senang',
+  sad: 'Sedih',
+  dailyQuests: 'Misi Harian',
+  questHunger: 'Jaga rasa lapar di atas 80%',
+  questClean: 'Bersihkan peliharaan sepenuhnya',
+  questFun: 'Main game sampai kesenangan 90%',
+};
+
+export const useTranslations = (language: 'en' | 'id') => {
+  const t = (key: TranslationKey): string => {
+    return language === 'id' ? id[key] : en[key];
+  };
+  return t;
+};

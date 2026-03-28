@@ -6,10 +6,12 @@ import PetDisplay from '@/components/PetDisplay';
 import Navigation from '@/components/Navigation';
 import RoomContainer from '@/components/RoomContainer';
 import { useEffect, useState } from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 export default function Home() {
   const { state, isLoaded, actions } = useGameState();
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations(state?.settings?.language || 'en');
 
   useEffect(() => {
     setMounted(true);
@@ -18,7 +20,7 @@ export default function Home() {
   if (!mounted || !isLoaded) {
     return (
       <div className="min-h-screen bg-neutral-900 flex items-center justify-center text-white">
-        <div className="animate-pulse text-2xl font-bold">Loading Pet...</div>
+        <div className="animate-pulse text-2xl font-bold">{t('loading')}</div>
       </div>
     );
   }
@@ -32,7 +34,7 @@ export default function Home() {
           <PetDisplay state={state} />
         </RoomContainer>
         
-        <Navigation activeRoom={state.activeRoom} changeRoom={actions.changeRoom} isSleeping={state.isSleeping} />
+        <Navigation activeRoom={state.activeRoom} changeRoom={actions.changeRoom} isSleeping={state.isSleeping} language={state.settings.language} />
       </div>
     </main>
   );

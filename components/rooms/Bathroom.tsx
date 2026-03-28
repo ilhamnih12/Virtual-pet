@@ -1,6 +1,7 @@
 import { GameState } from '@/hooks/useGameState';
 import { ShowerHead, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 interface BathroomProps {
   state: GameState;
@@ -9,6 +10,7 @@ interface BathroomProps {
 
 export default function Bathroom({ state, clean }: BathroomProps) {
   const [isCleaning, setIsCleaning] = useState(false);
+  const t = useTranslations(state.settings.language);
 
   const handleClean = () => {
     setIsCleaning(true);
@@ -20,11 +22,11 @@ export default function Bathroom({ state, clean }: BathroomProps) {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 flex flex-col items-center justify-center">
-      <h2 className="text-xl font-bold text-cyan-800 mb-4">Bathroom</h2>
+      <h2 className="text-xl font-bold text-cyan-800 mb-4">{t('bathroom')}</h2>
       
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
-          <p className="text-sm font-medium text-cyan-700 mb-1">Dirt Level</p>
+          <p className="text-sm font-medium text-cyan-700 mb-1">{t('dirtLevel')}</p>
           <div className="w-48 h-4 bg-cyan-100 rounded-full overflow-hidden">
             <div 
               className="h-full bg-cyan-600 transition-all duration-500"
@@ -41,12 +43,12 @@ export default function Bathroom({ state, clean }: BathroomProps) {
           {isCleaning ? (
             <>
               <Sparkles className="animate-spin" />
-              Scrubbing...
+              {t('loading')}
             </>
           ) : (
             <>
               <ShowerHead />
-              Clean Pet
+              {t('clean')}
             </>
           )}
           

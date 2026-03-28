@@ -1,6 +1,7 @@
 import { GameState } from '@/hooks/useGameState';
+import { memo } from 'react';
 
-export default function PetDisplay({ state }: { state: GameState }) {
+export default memo(function PetDisplay({ state }: { state: GameState }) {
   // Determine pet expression based on stats
   let expression = 'happy';
   if (state.isSleeping) expression = 'sleeping';
@@ -50,7 +51,7 @@ export default function PetDisplay({ state }: { state: GameState }) {
       </div>
     </div>
   );
-}
+});
 
 function Eye({ expression }: { expression: string }) {
   if (expression === 'sleeping') {

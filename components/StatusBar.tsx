@@ -1,31 +1,35 @@
 import { useState } from 'react';
 import { GameState } from '@/hooks/useGameState';
 import { Coins, Star, Heart, Zap, Smile, Drumstick, Settings } from 'lucide-react';
+import { memo } from 'react';
 import SettingsModal from './SettingsModal';
 
-export default function StatusBar({ state, actions }: { state: GameState, actions: any }) {
+export default memo(function StatusBar({ state, actions }: { state: GameState, actions: any }) {
   const [showSettings, setShowSettings] = useState(false);
 
   return (
     <>
-    <div className="bg-white/90 backdrop-blur-md p-4 flex flex-col gap-3 z-10 border-b border-neutral-200 relative">
+    <div className="bg-white/90 backdrop-blur-md p-4 flex flex-col gap-3 z-10 border-b border-neutral-200">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full text-yellow-700 font-bold">
           <Coins size={18} />
           <span>{state.coins}</span>
         </div>
-        <div className="flex items-center gap-2 bg-purple-100 px-3 py-1 rounded-full text-purple-700 font-bold">
-          <Star size={18} />
-          <span>Lvl {state.level}</span>
-        </div>
 
-        <button
-          onClick={() => setShowSettings(true)}
-          className="absolute right-4 top-4 p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full transition-colors z-20"
-          aria-label="Settings"
-        >
-          <Settings size={20} className="text-neutral-600" />
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-purple-100 px-3 py-1 rounded-full text-purple-700 font-bold">
+            <Star size={18} />
+            <span>Lvl {state.level}</span>
+          </div>
+
+          <button
+            onClick={() => setShowSettings(true)}
+            className="p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full transition-colors z-20"
+            aria-label="Settings"
+          >
+            <Settings size={20} className="text-neutral-600" />
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-4 gap-2 mt-2">
@@ -45,7 +49,7 @@ export default function StatusBar({ state, actions }: { state: GameState, action
     )}
     </>
   );
-}
+});
 
 function StatBar({ icon, value, color }: { icon: React.ReactNode; value: number; color: string }) {
   return (

@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 interface MathSprintProps {
   onEnd: (score: number) => void;
   onCancel: () => void;
+  language: 'en' | 'id';
 }
 
-export default function MathSprint({ onEnd, onCancel }: MathSprintProps) {
+export default function MathSprint({ onEnd, onCancel, language }: MathSprintProps) {
+  const t = useTranslations(language);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [equation, setEquation] = useState({ num1: 0, num2: 0, op: '+', answer: 0 });
@@ -75,9 +78,9 @@ export default function MathSprint({ onEnd, onCancel }: MathSprintProps) {
   return (
     <div className="absolute inset-0 bg-emerald-100 z-50 flex flex-col">
       <div className="flex justify-between p-4 bg-white/50 backdrop-blur-sm z-10">
-        <div className="font-bold text-xl text-emerald-600">Score: {score}</div>
-        <div className="font-bold text-xl text-teal-600">Time: {timeLeft}s</div>
-        <button onClick={onCancel} className="text-sm font-bold text-neutral-500 hover:text-neutral-800">Exit</button>
+        <div className="font-bold text-xl text-emerald-600">{t('score')}: {score}</div>
+        <div className="font-bold text-xl text-teal-600">{t('time')}: {timeLeft}s</div>
+        <button onClick={onCancel} className="text-sm font-bold text-neutral-500 hover:text-neutral-800">{t('cancel')}</button>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center p-4">
