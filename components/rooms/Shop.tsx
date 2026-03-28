@@ -1,5 +1,6 @@
 import { GameState, InventoryItem } from '@/hooks/useGameState';
 import { ShoppingCart, Check, Palette, Crown } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 interface ShopProps {
   state: GameState;
@@ -17,11 +18,12 @@ const SHOP_ITEMS: { id: string; name: string; type: 'skin' | 'hat' | 'wallpaper'
 ];
 
 export default function Shop({ state, buyItem, equipItem }: ShopProps) {
+  const t = useTranslations(state.settings.language);
   return (
     <div className="bg-white/90 backdrop-blur-md rounded-t-3xl p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[400px] flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-amber-800 flex items-center gap-2">
-          <ShoppingCart /> Shop
+          <ShoppingCart /> {t('shop')}
         </h2>
         <div className="bg-yellow-100 text-yellow-700 font-bold px-3 py-1 rounded-full flex items-center gap-1">
           💰 {state.coins}
@@ -59,7 +61,7 @@ export default function Shop({ state, buyItem, equipItem }: ShopProps) {
                         : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                   >
-                    {isEquipped ? 'Equipped' : 'Equip'}
+                    {isEquipped ? t('equipped') : t('equip')}
                   </button>
                 ) : (
                   <button

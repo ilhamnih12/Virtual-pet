@@ -12,7 +12,9 @@ interface RoomContainerProps {
   children: React.ReactNode;
 }
 
-export default function RoomContainer({ state, actions, children }: RoomContainerProps) {
+import { memo } from 'react';
+
+export default memo(function RoomContainer({ state, actions, children }: RoomContainerProps) {
   // Determine background based on room
   let bgClass = 'bg-gradient-to-b from-blue-200 to-blue-400';
   
@@ -58,4 +60,4 @@ export default function RoomContainer({ state, actions, children }: RoomContaine
       </div>
     </div>
   );
-}
+});

@@ -1,20 +1,24 @@
 import { Room } from '@/hooks/useGameState';
 import { Utensils, Bath, Beaker, Bed, Gamepad2, ShoppingBag } from 'lucide-react';
+import { memo } from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 interface NavigationProps {
   activeRoom: Room;
   changeRoom: (room: Room) => void;
   isSleeping: boolean;
+  language: 'en' | 'id';
 }
 
-export default function Navigation({ activeRoom, changeRoom, isSleeping }: NavigationProps) {
+export default memo(function Navigation({ activeRoom, changeRoom, isSleeping, language }: NavigationProps) {
+  const t = useTranslations(language);
   const navItems: { id: Room; icon: React.ReactNode; label: string }[] = [
-    { id: 'Kitchen', icon: <Utensils size={24} />, label: 'Kitchen' },
-    { id: 'Bathroom', icon: <Bath size={24} />, label: 'Bathroom' },
-    { id: 'Lab', icon: <Beaker size={24} />, label: 'Lab' },
-    { id: 'Bedroom', icon: <Bed size={24} />, label: 'Bedroom' },
-    { id: 'GameCenter', icon: <Gamepad2 size={24} />, label: 'Games' },
-    { id: 'Shop', icon: <ShoppingBag size={24} />, label: 'Shop' },
+    { id: 'Kitchen', icon: <Utensils size={24} />, label: t('kitchen') },
+    { id: 'Bathroom', icon: <Bath size={24} />, label: t('bathroom') },
+    { id: 'Lab', icon: <Beaker size={24} />, label: t('lab') },
+    { id: 'Bedroom', icon: <Bed size={24} />, label: t('bedroom') },
+    { id: 'GameCenter', icon: <Gamepad2 size={24} />, label: t('games') },
+    { id: 'Shop', icon: <ShoppingBag size={24} />, label: t('shop') },
   ];
 
   return (
@@ -42,4 +46,4 @@ export default function Navigation({ activeRoom, changeRoom, isSleeping }: Navig
       </div>
     </div>
   );
-}
+});

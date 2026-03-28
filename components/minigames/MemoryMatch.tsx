@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Apple, Pizza, Carrot, IceCream, Banana, Cherry, Grape, Cookie } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 interface MemoryMatchProps {
   onEnd: (score: number) => void;
   onCancel: () => void;
+  language: 'en' | 'id';
 }
 
 const ICONS = [
@@ -17,7 +19,8 @@ const ICONS = [
   <Cookie key="8" size={32} className="text-yellow-600" />,
 ];
 
-export default function MemoryMatch({ onEnd, onCancel }: MemoryMatchProps) {
+export default function MemoryMatch({ onEnd, onCancel, language }: MemoryMatchProps) {
+  const t = useTranslations(language);
   const [cards, setCards] = useState<{ id: number; iconIndex: number; isFlipped: boolean; isMatched: boolean }[]>([]);
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [matches, setMatches] = useState(0);
@@ -68,7 +71,7 @@ export default function MemoryMatch({ onEnd, onCancel }: MemoryMatchProps) {
       <div className="flex justify-between p-4 bg-white/50 backdrop-blur-sm z-10">
         <div className="font-bold text-xl text-indigo-600">Matches: {matches}/8</div>
         <div className="font-bold text-xl text-neutral-600">Moves: {moves}</div>
-        <button onClick={onCancel} className="text-sm font-bold text-neutral-500 hover:text-neutral-800">Exit</button>
+        <button onClick={onCancel} className="text-sm font-bold text-neutral-500 hover:text-neutral-800">{t('cancel')}</button>
       </div>
 
       <div className="flex-1 flex items-center justify-center p-4">
