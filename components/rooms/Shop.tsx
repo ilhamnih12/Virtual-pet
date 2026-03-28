@@ -1,24 +1,43 @@
 import { GameState, InventoryItem } from '@/hooks/useGameState';
-import { ShoppingCart, Check, Palette, Crown } from 'lucide-react';
+import { ShoppingCart, Palette, Crown, Apple, FlaskConical, Shirt } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
+import { useState } from 'react';
 
 interface ShopProps {
   state: GameState;
   buyItem: (item: InventoryItem, cost: number) => void;
-  equipItem: (itemId: string, type: 'skin' | 'hat' | 'wallpaper') => void;
 }
 
-const SHOP_ITEMS: { id: string; name: string; type: 'skin' | 'hat' | 'wallpaper'; cost: number; icon: React.ReactNode }[] = [
-  { id: 'skin-blue', name: '#3B82F6', type: 'skin', cost: 100, icon: <div className="w-6 h-6 rounded-full bg-blue-500" /> },
-  { id: 'skin-green', name: '#10B981', type: 'skin', cost: 150, icon: <div className="w-6 h-6 rounded-full bg-emerald-500" /> },
-  { id: 'skin-pink', name: '#EC4899', type: 'skin', cost: 200, icon: <div className="w-6 h-6 rounded-full bg-pink-500" /> },
-  { id: 'hat-cap', name: 'Cap', type: 'hat', cost: 50, icon: <span className="text-2xl">🧢</span> },
-  { id: 'hat-top', name: 'Top Hat', type: 'hat', cost: 120, icon: <span className="text-2xl">🎩</span> },
-  { id: 'hat-crown', name: 'Crown', type: 'hat', cost: 500, icon: <span className="text-2xl">👑</span> },
-];
-
-export default function Shop({ state, buyItem, equipItem }: ShopProps) {
+export default function Shop({ state, buyItem }: ShopProps) {
   const t = useTranslations(state.settings.language);
+
+  const SHOP_ITEMS = [
+    // Foods
+    { id: 'food-apple', translationKey: 'apple', type: 'food', value: 10, cost: 5, icon: <Apple className="text-red-500" /> },
+    { id: 'food-pizza', translationKey: 'pizza', type: 'food', value: 30, cost: 20, icon: <span className="text-xl">🍕</span> },
+
+    // Potions
+    { id: 'potion-energy', translationKey: 'energyPotion', type: 'potion', cost: 50, icon: <FlaskConical className="text-yellow-500" /> },
+    { id: 'potion-health', translationKey: 'healthPotion', type: 'potion', cost: 100, icon: <FlaskConical className="text-red-500" /> },
+    { id: 'potion-diet', translationKey: 'dietPotion', type: 'potion', cost: 75, icon: <FlaskConical className="text-emerald-500" /> },
+
+    // Skins (don't translate colors)
+    { id: 'skin-blue', name: '#3B82F6', type: 'skin', cost: 100, icon: <div className="w-6 h-6 rounded-full bg-blue-500" /> },
+    { id: 'skin-green', name: '#10B981', type: 'skin', cost: 150, icon: <div className="w-6 h-6 rounded-full bg-emerald-500" /> },
+
+    // Hats & Glasses
+    { id: 'hat-cap', translationKey: 'cap', type: 'hat', cost: 50, icon: <span className="text-2xl">🧢</span> },
+    { id: 'hat-crown', translationKey: 'crown', type: 'hat', cost: 500, icon: <span className="text-2xl">👑</span> },
+    { id: 'glass-sun', translationKey: 'sunglasses', type: 'glasses', cost: 200, icon: <span className="text-2xl">🕶️</span> },
+  ] as const;
+  const [tab, setTab] = useState<'food' | 'potion' | 'clothes'>('food');
+
+  const filteredItems = SHOP_ITEMS.filter(item => {
+    if (tab === 'food') return item.type === 'food';
+    if (tab === 'potion') return item.type === 'potion';
+    return item.type === 'skin' || item.type === 'hat' || item.type === 'glasses';
+  });
+
   return (
     <div className="bg-white/90 backdrop-blur-md rounded-t-3xl p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[400px] flex flex-col">
       <div className="flex justify-between items-center mb-4">
@@ -30,42 +49,56 @@ export default function Shop({ state, buyItem, equipItem }: ShopProps) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-2 space-y-4">
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setTab('food')}
+          className={`flex-1 py-2 rounded-xl text-sm font-bold ${tab === 'food' ? 'bg-orange-100 text-orange-700' : 'bg-neutral-100 text-neutral-500'}`}
+        >{t('food')}</button>
+        <button
+          onClick={() => setTab('potion')}
+          className={`flex-1 py-2 rounded-xl text-sm font-bold ${tab === 'potion' ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-100 text-neutral-500'}`}
+        >{t('potions')}</button>
+        <button
+          onClick={() => setTab('clothes')}
+          className={`flex-1 py-2 rounded-xl text-sm font-bold ${tab === 'clothes' ? 'bg-purple-100 text-purple-700' : 'bg-neutral-100 text-neutral-500'}`}
+        >{t('clothes')}</button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto pr-2">
         <div className="grid grid-cols-3 gap-3">
-          {SHOP_ITEMS.map((item) => {
-            const isOwned = state.inventory.some((i) => i.id === item.id);
-            const isEquipped = state.inventory.some((i) => i.id === item.id && i.equipped);
+          {filteredItems.map((item) => {
+            const inventoryItem = state.inventory.find(i => i.id === item.id);
+            const isOwned = inventoryItem !== undefined && (item.type === 'skin' || item.type === 'hat' || item.type === 'glasses');
             const canAfford = state.coins >= item.cost;
+            const isConsumable = item.type === 'food' || item.type === 'potion';
 
             return (
               <div
                 key={item.id}
                 className={`relative flex flex-col items-center justify-between p-3 rounded-2xl border-2 transition-all ${
-                  isEquipped
-                    ? 'border-green-500 bg-green-50'
-                    : isOwned
-                    ? 'border-blue-200 bg-blue-50 hover:border-blue-400'
+                  isOwned
+                    ? 'border-blue-200 bg-blue-50'
                     : canAfford
                     ? 'border-amber-200 bg-amber-50 hover:border-amber-400'
                     : 'border-neutral-200 bg-neutral-50 opacity-60'
                 }`}
               >
+                {isConsumable && inventoryItem && inventoryItem.quantity! > 0 && (
+                  <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                    {inventoryItem.quantity}
+                  </div>
+                )}
+
                 <div className="mb-2">{item.icon}</div>
+                <div className="text-[10px] text-center font-medium text-neutral-600 mb-2 truncate w-full">{'translationKey' in item ? t(item.translationKey as any) : item.name}</div>
                 
                 {isOwned ? (
-                  <button
-                    onClick={() => equipItem(item.id, item.type)}
-                    className={`text-xs font-bold py-1 px-3 rounded-full w-full ${
-                      isEquipped
-                        ? 'bg-green-500 text-white'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  >
-                    {isEquipped ? t('equipped') : t('equip')}
-                  </button>
+                  <div className="text-xs font-bold py-1 px-3 rounded-full w-full bg-neutral-200 text-neutral-500 text-center">
+                    {t('owned')}
+                  </div>
                 ) : (
                   <button
-                    onClick={() => buyItem({ id: item.id, name: item.name, type: item.type, equipped: false }, item.cost)}
+                    onClick={() => buyItem({ id: item.id, name: 'translationKey' in item ? t(item.translationKey as any) : item.name, type: item.type as any, value: (item as any).value, equipped: false }, item.cost)}
                     disabled={!canAfford}
                     className="text-xs font-bold py-1 px-3 rounded-full w-full bg-amber-500 text-white hover:bg-amber-600 disabled:bg-neutral-300 disabled:text-neutral-500"
                   >

@@ -1,5 +1,5 @@
 import { Room } from '@/hooks/useGameState';
-import { Utensils, Bath, Beaker, Bed, Gamepad2, ShoppingBag } from 'lucide-react';
+import { Utensils, Bath, Beaker, Bed, Gamepad2, ShoppingBag, Shirt } from 'lucide-react';
 import { memo } from 'react';
 import { useTranslations } from '@/lib/i18n';
 
@@ -17,6 +17,7 @@ export default memo(function Navigation({ activeRoom, changeRoom, isSleeping, la
     { id: 'Bathroom', icon: <Bath size={24} />, label: t('bathroom') },
     { id: 'Lab', icon: <Beaker size={24} />, label: t('lab') },
     { id: 'Bedroom', icon: <Bed size={24} />, label: t('bedroom') },
+    { id: 'DressingRoom', icon: <Shirt size={24} />, label: t('dressingRoom') },
     { id: 'GameCenter', icon: <Gamepad2 size={24} />, label: t('games') },
     { id: 'Shop', icon: <ShoppingBag size={24} />, label: t('shop') },
   ];

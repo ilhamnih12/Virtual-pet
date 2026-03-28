@@ -1,5 +1,5 @@
 export type TranslationKey =
-  | 'kitchen' | 'bathroom' | 'bedroom' | 'lab' | 'games' | 'shop' | 'gameCenter'
+  | 'kitchen' | 'bathroom' | 'bedroom' | 'lab' | 'games' | 'shop' | 'gameCenter' | 'dressingRoom'
   | 'feed' | 'clean' | 'sleep' | 'wakeUp' | 'energyLevel'
   | 'hungerLevel' | 'dirtLevel' | 'funLevel'
   | 'playGame' | 'buyItem' | 'equip' | 'equipped'
@@ -11,7 +11,16 @@ export type TranslationKey =
   | 'inventory' | 'store' | 'price' | 'notEnoughCoins' | 'buy'
   | 'laboratory' | 'vitals' | 'age' | 'days' | 'weight' | 'mood' | 'hygiene' | 'happy' | 'sad'
   | 'dailyQuests' | 'questHunger' | 'questClean' | 'questFun'
-  | 'catchGameDesc' | 'memoryMatchDesc' | 'mathSprintDesc';
+  | 'catchGameDesc' | 'memoryMatchDesc' | 'mathSprintDesc'
+  | 'levelUp' | 'levelUpDesc' | 'awesome'
+  | 'flappyPet' | 'flappyPetDesc' | 'whackAMole' | 'whackAMoleDesc'
+  | 'dragToFeed' | 'dragToHeal'
+  | 'food' | 'potions' | 'clothes' | 'emptyFood' | 'emptyPotions'
+  | 'colors' | 'hats' | 'glasses' | 'emptyColors' | 'emptyHats' | 'emptyGlasses'
+  | 'energyPotion' | 'healthPotion' | 'dietPotion'
+  | 'sunglasses' | 'cap' | 'topHat' | 'crown'
+  | 'apple' | 'pizza' | 'carrot' | 'iceCream'
+  | 'owned' | 'crash' | 'fallen';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -23,6 +32,7 @@ export const en: Translations = {
   games: 'Games',
   gameCenter: 'Game Center',
   shop: 'Shop',
+  dressingRoom: 'Wardrobe',
   feed: 'Feed',
   clean: 'Clean',
   sleep: 'Go to Sleep',
@@ -78,6 +88,40 @@ export const en: Translations = {
   questHunger: 'Keep hunger above 80%',
   questClean: 'Clean pet completely',
   questFun: 'Play games until fun is 90%',
+  levelUp: 'Level Up!',
+  levelUpDesc: 'You reached level',
+  awesome: 'Awesome!',
+  flappyPet: 'Flappy Pet',
+  flappyPetDesc: 'Fly through obstacles!',
+  whackAMole: 'Whack-a-Mole',
+  whackAMoleDesc: 'Hit them fast!',
+  dragToFeed: 'Drag food to pet to feed',
+  dragToHeal: 'Drag potion to pet to heal',
+  food: 'Food',
+  potions: 'Potions',
+  clothes: 'Clothes',
+  emptyFood: 'No food in inventory. Go to the Shop!',
+  emptyPotions: 'No potions in inventory. Go to the Shop!',
+  colors: 'Colors',
+  hats: 'Hats',
+  glasses: 'Glasses',
+  emptyColors: 'No colors owned.',
+  emptyHats: 'No hats owned.',
+  emptyGlasses: 'No glasses owned.',
+  energyPotion: 'Energy Potion',
+  healthPotion: 'Health Potion',
+  dietPotion: 'Diet Potion',
+  sunglasses: 'Sunglasses',
+  cap: 'Cap',
+  topHat: 'Top Hat',
+  crown: 'Crown',
+  apple: 'Apple',
+  pizza: 'Pizza',
+  carrot: 'Carrot',
+  iceCream: 'Ice Cream',
+  owned: 'Owned',
+  crash: 'CRASH!',
+  fallen: 'FALLEN!',
 };
 
 export const id: Translations = {
@@ -88,6 +132,7 @@ export const id: Translations = {
   games: 'Bermain',
   gameCenter: 'Pusat Game',
   shop: 'Toko',
+  dressingRoom: 'Lemari',
   feed: 'Beri Makan',
   clean: 'Mandikan',
   sleep: 'Tidur',
@@ -143,6 +188,40 @@ export const id: Translations = {
   questHunger: 'Jaga rasa lapar di atas 80%',
   questClean: 'Bersihkan peliharaan sepenuhnya',
   questFun: 'Main game sampai kesenangan 90%',
+  levelUp: 'Naik Level!',
+  levelUpDesc: 'Kamu mencapai level',
+  awesome: 'Mantap!',
+  flappyPet: 'Peliharaan Terbang',
+  flappyPetDesc: 'Terbang lewati rintangan!',
+  whackAMole: 'Pukul Hama',
+  whackAMoleDesc: 'Pukul dengan cepat!',
+  dragToFeed: 'Geser makanan ke peliharaan',
+  dragToHeal: 'Geser ramuan ke peliharaan',
+  food: 'Makanan',
+  potions: 'Ramuan',
+  clothes: 'Pakaian',
+  emptyFood: 'Tidak ada makanan. Beli di Toko!',
+  emptyPotions: 'Tidak ada ramuan. Beli di Toko!',
+  colors: 'Warna',
+  hats: 'Topi',
+  glasses: 'Kacamata',
+  emptyColors: 'Tidak punya warna.',
+  emptyHats: 'Tidak punya topi.',
+  emptyGlasses: 'Tidak punya kacamata.',
+  energyPotion: 'Ramuan Energi',
+  healthPotion: 'Ramuan Sehat',
+  dietPotion: 'Ramuan Diet',
+  sunglasses: 'Kacamata Hitam',
+  cap: 'Topi',
+  topHat: 'Topi Pesulap',
+  crown: 'Mahkota',
+  apple: 'Apel',
+  pizza: 'Piza',
+  carrot: 'Wortel',
+  iceCream: 'Es Krim',
+  owned: 'Dimiliki',
+  crash: 'NABRAK!',
+  fallen: 'JATUH!',
 };
 
 export const useTranslations = (language: 'en' | 'id') => {
