@@ -1,39 +1,55 @@
 import { GameState } from '@/hooks/useGameState';
-import { Apple, Pizza, IceCream, Carrot } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
+import { Apple, Utensils } from 'lucide-react';
 
 interface KitchenProps {
   state: GameState;
-  feed: (foodValue: number, cost: number) => void;
+  feed: (foodValue: number, itemId?: string) => void;
 }
 
 export default function Kitchen({ state, feed }: KitchenProps) {
   const t = useTranslations(state.settings.language);
-  const foods = [
-    { id: 'apple', name: 'Apple', icon: <Apple size={32} className="text-red-500" />, value: 10, cost: 5 },
-    { id: 'carrot', name: 'Carrot', icon: <Carrot size={32} className="text-orange-500" />, value: 15, cost: 8 },
-    { id: 'pizza', name: 'Pizza', icon: <Pizza size={32} className="text-yellow-500" />, value: 30, cost: 20 },
-    { id: 'icecream', name: 'Ice Cream', icon: <IceCream size={32} className="text-pink-500" />, value: 20, cost: 15 },
-  ];
+  const foods = state.inventory.filter(i => i.type === 'food' && (i.quantity || 0) > 0);
+
+  const handleDragStart = (e: React.DragEvent, value: number, id: string) => {
+    e.dataTransfer.setData('text/plain', JSON.stringify({ value, id, type: 'food' }));
+  };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/50">
-      <h2 className="text-lg font-bold text-neutral-800 mb-3 text-center">{t('kitchen')}</h2>
-      <div className="grid grid-cols-4 gap-2">
-        {foods.map((food) => (
-          <button
-            key={food.id}
-            onClick={() => feed(food.value, food.cost)}
-            disabled={state.coins < food.cost || state.hunger >= 100}
-            className="flex flex-col items-center gap-1 p-2 bg-white rounded-xl shadow-sm hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
-          >
-            <div className="bg-neutral-100 p-2 rounded-full">{food.icon}</div>
-            <span className="text-xs font-medium text-neutral-600">{food.name}</span>
-            <span className="text-[10px] text-yellow-600 font-bold flex items-center">
-              💰 {food.cost}
-            </span>
-          </button>
-        ))}
+    <div className="bg-white/90 backdrop-blur-md rounded-t-3xl p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[250px] flex flex-col">
+      <h2 className="text-2xl font-bold text-orange-800 mb-4 flex items-center gap-2">
+        <Utensils /> {t('kitchen')}
+      </h2>
+
+      <div className="text-sm font-medium text-orange-600 mb-4 text-center bg-orange-50 p-2 rounded-lg border border-orange-200">
+        {t('dragToFeed')}
+      </div>
+
+      <div className="flex-1 overflow-x-auto flex gap-4 pb-4 items-center">
+        {foods.length === 0 ? (
+          <div className="w-full text-center text-neutral-400 font-medium">
+            {t('emptyFood')}
+          </div>
+        ) : (
+          foods.map(food => (
+            <div
+              key={food.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, food.value || 10, food.id)}
+              className="flex-shrink-0 w-24 h-24 bg-white border-2 border-orange-200 rounded-2xl flex flex-col items-center justify-center cursor-grab hover:scale-105 transition-transform hover:border-orange-400 shadow-sm relative active:cursor-grabbing"
+            >
+              <div className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+                {food.quantity}
+              </div>
+              <div className="text-3xl mb-1">
+                {food.id === 'food-apple' ? '🍎' : '🍕'}
+              </div>
+              <span className="text-[10px] font-bold text-neutral-600 truncate w-full px-2 text-center">
+                {food.name}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

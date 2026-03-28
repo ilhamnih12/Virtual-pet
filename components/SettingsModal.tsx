@@ -1,5 +1,5 @@
 import { GameState } from '@/hooks/useGameState';
-import { Volume2, X, AlertTriangle } from 'lucide-react';
+import { Volume2, X, AlertTriangle, Bell, Vibrate } from 'lucide-react';
 import { useState } from 'react';
 
 interface SettingsModalProps {
@@ -18,6 +18,10 @@ export default function SettingsModal({ state, actions, onClose }: SettingsModal
     language: 'Bahasa',
     english: 'Inggris',
     indonesian: 'Indonesia',
+    notifications: 'Notifikasi',
+    vibration: 'Getaran',
+    on: 'Nyala',
+    off: 'Mati',
     resetGame: 'Reset Game',
     resetConfirm: 'Apakah Anda yakin ingin mereset semua data permainan? Ini tidak bisa dikembalikan!',
     cancel: 'Batal',
@@ -29,6 +33,10 @@ export default function SettingsModal({ state, actions, onClose }: SettingsModal
     language: 'Language',
     english: 'English',
     indonesian: 'Indonesian',
+    notifications: 'Notifications',
+    vibration: 'Vibration',
+    on: 'On',
+    off: 'Off',
     resetGame: 'Reset Game',
     resetConfirm: 'Are you sure you want to reset all game data? This cannot be undone!',
     cancel: 'Cancel',
@@ -76,6 +84,43 @@ export default function SettingsModal({ state, actions, onClose }: SettingsModal
               onChange={(e) => actions.updateSettings({ volume: parseInt(e.target.value) })}
               className="w-full h-2 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
             />
+          </div>
+
+          {/* Toggles: Notifications & Vibration */}
+          <div className="flex gap-4">
+            <div className="flex-1 space-y-3">
+              <label className="text-sm font-semibold text-neutral-700 flex items-center gap-2">
+                <Bell size={18} className="text-neutral-500" />
+                {t.notifications}
+              </label>
+              <button
+                onClick={() => actions.updateSettings({ notifications: !state.settings.notifications })}
+                className={`w-full py-2 px-4 rounded-xl border-2 transition-all font-medium ${
+                  state.settings.notifications
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                    : 'border-neutral-200 bg-neutral-100 text-neutral-500'
+                }`}
+              >
+                {state.settings.notifications ? t.on : t.off}
+              </button>
+            </div>
+
+            <div className="flex-1 space-y-3">
+              <label className="text-sm font-semibold text-neutral-700 flex items-center gap-2">
+                <Vibrate size={18} className="text-neutral-500" />
+                {t.vibration}
+              </label>
+              <button
+                onClick={() => actions.updateSettings({ vibration: !state.settings.vibration })}
+                className={`w-full py-2 px-4 rounded-xl border-2 transition-all font-medium ${
+                  state.settings.vibration
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                    : 'border-neutral-200 bg-neutral-100 text-neutral-500'
+                }`}
+              >
+                {state.settings.vibration ? t.on : t.off}
+              </button>
+            </div>
           </div>
 
           {/* Language Selection */}

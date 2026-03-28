@@ -1,47 +1,59 @@
 import { GameState } from '@/hooks/useGameState';
-import { FlaskConical, Activity, Target } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
+import { FlaskConical } from 'lucide-react';
 
-export default function Lab({ state }: { state: GameState }) {
+interface LabProps {
+  state: GameState;
+  usePotion: (potionType: string, itemId: string) => void;
+}
+
+export default function Lab({ state, usePotion }: LabProps) {
   const t = useTranslations(state.settings.language);
+  const potions = state.inventory.filter(i => i.type === 'potion' && (i.quantity || 0) > 0);
+
+  const handleDragStart = (e: React.DragEvent, type: string, id: string) => {
+    e.dataTransfer.setData('text/plain', JSON.stringify({ type, id, category: 'potion' }));
+  };
+
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 flex flex-col items-center justify-center">
-      <h2 className="text-xl font-bold text-emerald-800 mb-4 flex items-center gap-2">
+    <div className="bg-white/90 backdrop-blur-md rounded-t-3xl p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[250px] flex flex-col">
+      <h2 className="text-2xl font-bold text-emerald-800 mb-4 flex items-center gap-2">
         <FlaskConical /> {t('laboratory')}
       </h2>
-      
-      <div className="w-full space-y-4">
-        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-          <h3 className="text-sm font-bold text-emerald-700 mb-2 flex items-center gap-1">
-            <Activity size={16} /> {t('vitals')}
-          </h3>
-          <div className="grid grid-cols-2 gap-2 text-xs text-emerald-600">
-            <div className="flex justify-between"><span>{t('age')}:</span> <span>{Math.floor((Date.now() - state.lastPlayed) / 86400000)} {t('days')}</span></div>
-            <div className="flex justify-between"><span>{t('weight')}:</span> <span>{Math.floor(state.hunger / 10 + 5)} kg</span></div>
-            <div className="flex justify-between"><span>{t('mood')}:</span> <span>{state.fun > 50 ? t('happy') : t('sad')}</span></div>
-            <div className="flex justify-between"><span>{t('hygiene')}:</span> <span>{100 - state.dirt}%</span></div>
-          </div>
-        </div>
 
-        <div className="bg-teal-50 p-4 rounded-xl border border-teal-100">
-          <h3 className="text-sm font-bold text-teal-700 mb-2 flex items-center gap-1">
-            <Target size={16} /> {t('dailyQuests')}
-          </h3>
-          <ul className="space-y-2 text-xs text-teal-600">
-            <li className="flex items-center gap-2">
-              <input type="checkbox" checked={state.hunger > 80} readOnly className="rounded text-teal-500" />
-              <span>{t('questHunger')}</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <input type="checkbox" checked={state.dirt === 0} readOnly className="rounded text-teal-500" />
-              <span>{t('questClean')}</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <input type="checkbox" checked={state.fun > 90} readOnly className="rounded text-teal-500" />
-              <span>{t('questFun')}</span>
-            </li>
-          </ul>
-        </div>
+      <div className="text-sm font-medium text-emerald-600 mb-4 text-center bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+        {t('dragToHeal')}
+      </div>
+
+      <div className="flex-1 overflow-x-auto flex gap-4 pb-4 items-center">
+        {potions.length === 0 ? (
+          <div className="w-full text-center text-neutral-400 font-medium">
+            {t('emptyPotions')}
+          </div>
+        ) : (
+          potions.map(potion => (
+            <div
+              key={potion.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, potion.id.replace('potion-', ''), potion.id)}
+              className="flex-shrink-0 w-24 h-24 bg-white border-2 border-emerald-200 rounded-2xl flex flex-col items-center justify-center cursor-grab hover:scale-105 transition-transform hover:border-emerald-400 shadow-sm relative active:cursor-grabbing"
+            >
+              <div className="absolute -top-2 -right-2 bg-emerald-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+                {potion.quantity}
+              </div>
+              <div className={`text-3xl mb-1 ${
+                potion.id.includes('health') ? 'text-red-500' :
+                potion.id.includes('energy') ? 'text-yellow-500' :
+                'text-emerald-500'
+              }`}>
+                ⚗️
+              </div>
+              <span className="text-[10px] font-bold text-neutral-600 truncate w-full px-2 text-center">
+                {potion.name}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

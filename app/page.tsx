@@ -5,6 +5,8 @@ import StatusBar from '@/components/StatusBar';
 import PetDisplay from '@/components/PetDisplay';
 import Navigation from '@/components/Navigation';
 import RoomContainer from '@/components/RoomContainer';
+import LevelUpModal from '@/components/LevelUpModal';
+import AudioController from '@/components/AudioController';
 import { useEffect, useState } from 'react';
 import { useTranslations } from '@/lib/i18n';
 
@@ -31,10 +33,16 @@ export default function Home() {
         <StatusBar state={state} actions={actions} />
         
         <RoomContainer state={state} actions={actions}>
-          <PetDisplay state={state} />
+          <PetDisplay state={state} onFeed={actions.feed} onUsePotion={actions.usePotion} />
         </RoomContainer>
         
         <Navigation activeRoom={state.activeRoom} changeRoom={actions.changeRoom} isSleeping={state.isSleeping} language={state.settings.language} />
+
+        {state.showLevelUp && (
+          <LevelUpModal state={state} onClose={actions.closeLevelUpModal} />
+        )}
+
+        <AudioController state={state} />
       </div>
     </main>
   );

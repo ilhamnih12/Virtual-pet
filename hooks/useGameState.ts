@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export type Room = 'Kitchen' | 'Bathroom' | 'Lab' | 'Bedroom' | 'GameCenter' | 'Shop';
+export type Room = 'Kitchen' | 'Bathroom' | 'Lab' | 'Bedroom' | 'GameCenter' | 'Shop' | 'DressingRoom';
+
+export type ItemCategory = 'skin' | 'hat' | 'glasses' | 'food' | 'potion' | 'wallpaper';
 
 export interface InventoryItem {
   id: string;
   name: string;
-  type: 'skin' | 'hat' | 'wallpaper';
+  type: ItemCategory;
   equipped: boolean;
+  value?: number; // e.g., hunger value for food, health for potion
+  quantity?: number; // For consumable items
 }
 
 export interface GameState {
@@ -22,9 +26,12 @@ export interface GameState {
   activeRoom: Room;
   isSleeping: boolean;
   lastPlayed: number;
+  showLevelUp: boolean;
   settings: {
     volume: number;
     language: 'en' | 'id';
+    notifications: boolean;
+    vibration: boolean;
   };
 }
 
@@ -41,9 +48,12 @@ const INITIAL_STATE: GameState = {
   activeRoom: 'Kitchen',
   isSleeping: false,
   lastPlayed: Date.now(),
+  showLevelUp: false,
   settings: {
     volume: 100,
     language: 'en',
+    notifications: true,
+    vibration: true,
   },
 };
 
@@ -85,6 +95,10 @@ export function useGameState() {
         // ensure settings exist if loading from old state
         if (!parsed.settings) {
           parsed.settings = INITIAL_STATE.settings;
+        } else {
+          // Add newly added settings if they don't exist
+          if (parsed.settings.notifications === undefined) parsed.settings.notifications = true;
+          if (parsed.settings.vibration === undefined) parsed.settings.vibration = true;
         }
         setState({ ...INITIAL_STATE, ...parsed });
       } catch (e) {
@@ -136,15 +150,47 @@ export function useGameState() {
   }, [isLoaded]);
 
   // Actions
-  const feed = useCallback((foodValue: number, cost: number) => {
+  const feed = useCallback((foodValue: number, itemId?: string) => {
     setState((prev) => {
-      if (prev.coins < cost) return prev;
+      // If fed from inventory, remove 1 quantity
+      let newInventory = prev.inventory;
+      if (itemId) {
+        newInventory = prev.inventory.map(item => {
+          if (item.id === itemId && item.quantity) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        }).filter(item => item.quantity === undefined || item.quantity > 0);
+      }
+
       return {
         ...prev,
         hunger: Math.min(MAX_STAT, prev.hunger + foodValue),
-        coins: prev.coins - cost,
+        inventory: newInventory,
         xp: prev.xp + 5,
       };
+    });
+  }, []);
+
+  const usePotion = useCallback((potionType: string, itemId: string) => {
+    setState((prev) => {
+      // Remove 1 potion from inventory
+      const newInventory = prev.inventory.map(item => {
+        if (item.id === itemId && item.quantity) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      }).filter(item => item.quantity === undefined || item.quantity > 0);
+
+      const newState = { ...prev, inventory: newInventory, xp: prev.xp + 5 };
+
+      if (potionType === 'energy') newState.energy = MAX_STAT;
+      if (potionType === 'health') newState.health = MAX_STAT;
+      if (potionType === 'diet') {
+        newState.hunger = Math.max(0, newState.hunger - 30);
+      }
+
+      return newState;
     });
   }, []);
 
@@ -176,7 +222,29 @@ export function useGameState() {
 
   const buyItem = useCallback((item: InventoryItem, cost: number) => {
     setState((prev) => {
-      if (prev.coins < cost || prev.inventory.some(i => i.id === item.id)) return prev;
+      if (prev.coins < cost) return prev;
+
+      // If it's a consumable (food or potion), increase quantity instead of refusing to buy
+      if (item.type === 'food' || item.type === 'potion') {
+        const existingItem = prev.inventory.find(i => i.id === item.id);
+        let newInventory;
+        if (existingItem) {
+          newInventory = prev.inventory.map(i =>
+            i.id === item.id ? { ...i, quantity: (i.quantity || 0) + 1 } : i
+          );
+        } else {
+          newInventory = [...prev.inventory, { ...item, quantity: 1 }];
+        }
+        return {
+          ...prev,
+          coins: prev.coins - cost,
+          inventory: newInventory,
+        };
+      }
+
+      // For non-consumables, prevent buying duplicates
+      if (prev.inventory.some(i => i.id === item.id)) return prev;
+
       return {
         ...prev,
         coins: prev.coins - cost,
@@ -185,7 +253,7 @@ export function useGameState() {
     });
   }, []);
 
-  const equipItem = useCallback((itemId: string, type: 'skin' | 'hat' | 'wallpaper') => {
+  const equipItem = useCallback((itemId: string, type: ItemCategory) => {
     setState((prev) => ({
       ...prev,
       inventory: prev.inventory.map(item => {
@@ -215,6 +283,10 @@ export function useGameState() {
     setState(INITIAL_STATE);
   }, []);
 
+  const closeLevelUpModal = useCallback(() => {
+    setState(prev => ({ ...prev, showLevelUp: false }));
+  }, []);
+
   // Level up logic
   useEffect(() => {
     if (state.xp >= state.level * XP_PER_LEVEL) {
@@ -223,6 +295,7 @@ export function useGameState() {
         level: prev.level + 1,
         xp: prev.xp - prev.level * XP_PER_LEVEL,
         coins: prev.coins + 50, // Level up reward
+        showLevelUp: true, // Trigger modal
       }));
     }
   }, [state.xp, state.level]);
@@ -240,6 +313,8 @@ export function useGameState() {
       changeRoom,
       updateSettings,
       resetGame,
+      usePotion,
+      closeLevelUpModal,
     },
   };
 }
